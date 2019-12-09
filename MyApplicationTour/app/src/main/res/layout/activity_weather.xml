@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="4"
-    tools:context=".WeatherActivity">
+    tools:context=".activity.WeatherActivity">
 
 
     <androidx.cardview.widget.CardView

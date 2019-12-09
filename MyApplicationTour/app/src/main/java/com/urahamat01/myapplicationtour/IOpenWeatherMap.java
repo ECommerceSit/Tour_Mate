@@ -1,7 +1,7 @@
 package com.urahamat01.myapplicationtour;
 
-import com.urahamat01.myapplicationtour.CurrentWeather.WeatherResponse;
-import com.urahamat01.myapplicationtour.Weither.WeatherResult;
+import com.urahamat01.myapplicationtour.current_weather.WeatherResponse;
+import com.urahamat01.myapplicationtour.weather.WeatherResult;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
