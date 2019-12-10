@@ -29,7 +29,6 @@ public class LogInActivity extends AppCompatActivity {
     private EditText emailEt, passwordEt;
     private Button signinBtn;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private ProgressDialog loadinbar;
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
@@ -38,17 +37,7 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        registationTv = findViewById(R.id.SignUpTvId);
-        emailEt = findViewById(R.id.signInEmailEtId);
-        passwordEt = findViewById(R.id.signInPasswordEtId);
-        signinBtn = findViewById(R.id.signInBtnId);
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        forgotPasswordTv = findViewById(R.id.forgotpassTvid);
-        loadinbar = new ProgressDialog(this);
-
-
-
+        initialize();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -56,8 +45,8 @@ public class LogInActivity extends AppCompatActivity {
             Intent i = new Intent(LogInActivity.this, MainActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
-        } else {
 
+        } else {
 
             signinBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -66,27 +55,17 @@ public class LogInActivity extends AppCompatActivity {
                     String email = emailEt.getText().toString();
                     String password = passwordEt.getText().toString();
 
+                    if(!validate(email,password)){
 
-                    if (email.equals("") || password.equals("")) {
-                        Toast.makeText(LogInActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
-
-                    } else {
-
-                        if (emailEt.getText().toString().trim().matches(emailPattern)) {
-                            loadinbar.setTitle("SignIn");
-                            loadinbar.setMessage("Signing In");
-                            loadinbar.show();
-                            loadinbar.setCanceledOnTouchOutside(true);
-                            signInWithEmailAndPassword(email, password);
-
-                        } else {
-                            Toast.makeText(LogInActivity.this, "Invalid Email", Toast.LENGTH_SHORT).show();
-                        }
+                    }else {
+                        loadinbar.setTitle("SignIn");
+                        loadinbar.setMessage("Signing In");
+                        loadinbar.show();
+                        loadinbar.setCanceledOnTouchOutside(true);
+                        signInWithEmailAndPassword(email, password);
                     }
-
                 }
             });
-
 
             registationTv.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -96,12 +75,9 @@ public class LogInActivity extends AppCompatActivity {
                 }
             });
 
-
-
             forgotPasswordTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
 
                     final AlertDialog.Builder builder = new AlertDialog.Builder(LogInActivity.this);
                     LayoutInflater layoutInflater = LayoutInflater.from(LogInActivity.this);
@@ -121,7 +97,6 @@ public class LogInActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             if (email.getText().toString().trim().matches(emailPattern)) {
-
 
                                 String emailAddress = email.getText().toString();
 
@@ -182,4 +157,33 @@ public class LogInActivity extends AppCompatActivity {
         });
 
     }
+
+    private boolean validate(String email, String password) {
+
+            if (email.isEmpty()) {
+                emailEt.setError("Please enter a email");
+                return false;
+            } else if (!email.matches(emailPattern)) {
+                emailEt.setError("Please enter a valid email");
+                return false;
+            } else if (password.isEmpty()) {
+                passwordEt.setError("Please enter a password");
+                return false;
+            } else if (password.length() < 6) {
+                passwordEt.setError("Password must be at least 6 character");
+                return false;
+            }
+            return true;
+    }
+
+    private void initialize() {
+        registationTv = findViewById(R.id.SignUpTvId);
+        emailEt = findViewById(R.id.signInEmailEtId);
+        passwordEt = findViewById(R.id.signInPasswordEtId);
+        signinBtn = findViewById(R.id.signInBtnId);
+        firebaseAuth = FirebaseAuth.getInstance();
+        forgotPasswordTv = findViewById(R.id.forgotpassTvid);
+        loadinbar = new ProgressDialog(this);
+    }
+
 }
