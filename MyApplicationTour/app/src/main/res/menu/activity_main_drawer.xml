@@ -6,54 +6,43 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:iconTint="@color/mainColor"
             android:id="@+id/nav_Home"
             android:icon="@drawable/home"
-        android:title="Home" />
+            android:iconTint="@color/mainColor"
+            android:title="Home" />
         <item
             android:id="@+id/nav_Ticket"
-            android:iconTint="@color/mainColor"
             android:icon="@drawable/bus"
+            android:iconTint="@color/mainColor"
             android:title="Trips" />
-        <!--<item
-            android:iconTint="@color/mainColor"
-            android:id="@+id/nav_Ticket"
-            android:icon="@drawable/bus"
-            android:title="Ticket Booking" />-->
-        <item
-            android:iconTint="@color/mainColor"
-            android:id="@+id/nav_Weather"
-            android:icon="@drawable/weather"
-            android:title="Weather" />
-        <item
-            android:iconTint="@color/mainColor"
-            android:id="@+id/nav_Nearme"
-            android:icon="@drawable/nearme"
-            android:title="Near Me" />
 
         <item
+            android:id="@+id/nav_Nearme"
+            android:icon="@drawable/nearme"
             android:iconTint="@color/mainColor"
+            android:title="Near Me" />
+        <item
+            android:id="@+id/nav_Weather"
+            android:icon="@drawable/weather"
+            android:iconTint="@color/mainColor"
+            android:title="Weather" />
+
+
+        <item
             android:id="@+id/nav_Logout"
             android:icon="@drawable/power"
+            android:iconTint="@color/mainColor"
             android:title="Sign Out" />
     </group>
 
     <item android:title="Communicate">
         <menu>
-            <!--<item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />-->
 
 
             <item
-                android:title="About Developers"
                 android:id="@+id/about_developers"
-                android:icon="@drawable/ic_account_circle_black_24dp"></item>
+                android:icon="@drawable/ic_account_circle_black_24dp"
+                android:title="About Developers"></item>
 
 
         </menu>

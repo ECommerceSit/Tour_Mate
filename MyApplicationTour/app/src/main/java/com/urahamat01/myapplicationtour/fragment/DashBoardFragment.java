@@ -547,10 +547,12 @@ public class DashBoardFragment extends Fragment {
 
                 if (response.code() == 200) {
 
-
                     WeatherResponse weatherResponse = response.body();
+
+
                     currentWeathertemp.setText(String.valueOf(weatherResponse.getMain().getTemp()) + "°C");
-                    currentWeatherLocatonTv.setText(String.valueOf(weatherResponse.getName()));
+                    currentWeatherLocatonTv.setText(String.valueOf("Dhaka, "+weatherResponse.getSys().getCountry()));
+
                     currentWeatherDiscription.setText(String.valueOf(weatherResponse.getWeather().get(0).getDescription()));
                     currentWeatherHumidity.setText("Humidity: " + (String.valueOf(weatherResponse.getMain().getHumidity())) + "%");
                     currentWeatherWind.setText("Wind       : " + (String.valueOf(weatherResponse.getWind().getSpeed())) + "km/h");

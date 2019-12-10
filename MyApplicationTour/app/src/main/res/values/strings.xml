@@ -13,6 +13,18 @@
     <string name="appid1">c89bd891ff9e53aadcc9b7527c2c16b9</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_maps2">Map</string>
+    <string name="rahamat_name">MD. RAHAMAT ULLAH</string>
+    <string name="rahamat_email">urahamat01@gmail.com</string>
+    <string name="rahamat_facebook">facebook.com/urahamat01</string>
+
+    <string name="shuva_name">Shuva Ranjan Rishi</string>
+    <string name="shuva_email">shuvaranjanrishi@gmail.com</string>
+    <string name="shuva_facebook">shuvaranjanrishi/facebook.com</string>
+
+    <string name="harun_name">Md. Harun or Rashid</string>
+    <string name="harun_email">harunk873@gmail.com</string>
+    <string name="harun_facebook">harun.khan/facebook.com</string>
+
 
 
     <!-- TODO: Remove or change this placeholder text -->

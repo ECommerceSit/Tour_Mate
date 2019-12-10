@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -26,7 +25,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:src="@drawable/rony"
+                android:src="@drawable/rahamat"
                 app:civ_border_color="#2196F3"
                 app:civ_border_width="2dp"></de.hdodenhof.circleimageview.CircleImageView>
 
@@ -41,19 +40,19 @@
                     style="@style/TextAppearance.AppCompat.Headline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="MD. RAHAMAT ULLAH"
+                    android:text="@string/rahamat_name"
                     android:textSize="18sp"></TextView>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="shuvaranjanrishi@gmail.com"
+                    android:text="@string/rahamat_email"
                     android:textSize="16sp"></TextView>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ronyahmed/facebook.com"
+                    android:text="@string/rahamat_facebook"
                     android:textSize="16sp"></TextView>
             </LinearLayout>
 
@@ -92,19 +91,19 @@
                     style="@style/TextAppearance.AppCompat.Headline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Shuva Ranjan Rishi"
+                    android:text="@string/shuva_name"
                     android:textSize="18sp"></TextView>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="shuvaranjanrishi@gmail.com"
+                    android:text="@string/shuva_email"
                     android:textSize="16sp"></TextView>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="shuvaranjanrishi/facebook.com"
+                    android:text="@string/shuva_facebook"
                     android:textSize="16sp"></TextView>
             </LinearLayout>
 
@@ -142,19 +141,19 @@
                     style="@style/TextAppearance.AppCompat.Headline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Md. Harun or Rashid"
+                    android:text="@string/harun_name"
                     android:textSize="18sp"></TextView>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="harunk873@gmail.com"
+                    android:text="@string/harun_email"
                     android:textSize="16sp"></TextView>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="harun.khan/facebook.com"
+                    android:text="@string/harun_facebook"
                     android:textSize="16sp"></TextView>
             </LinearLayout>
 
