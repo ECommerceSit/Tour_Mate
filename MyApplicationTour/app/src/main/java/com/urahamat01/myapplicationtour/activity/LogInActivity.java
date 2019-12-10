@@ -56,7 +56,7 @@ public class LogInActivity extends AppCompatActivity {
                     String password = passwordEt.getText().toString();
 
                     if(!validate(email,password)){
-
+                        return;
                     }else {
                         loadinbar.setTitle("SignIn");
                         loadinbar.setMessage("Signing In");
@@ -129,10 +129,7 @@ public class LogInActivity extends AppCompatActivity {
                     });
                 }
             });
-
         }
-
-
     }
 
     private void signInWithEmailAndPassword(String email, String password) {
