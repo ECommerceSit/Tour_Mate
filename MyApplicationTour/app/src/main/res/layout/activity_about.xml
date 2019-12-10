@@ -11,6 +11,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="500dp"
+        android:paddingTop="200dp"
         android:layout_margin="8dp">
 
 
@@ -21,8 +23,7 @@
 
             <ImageView
                 android:background="@color/mainColor"
-                android:src="@mipmap/ic_launcher"
-                android:id="@+id/weatherItemIvId"
+                android:src="@drawable/rahamat"
                 android:layout_width="100dp"
                 android:layout_height="80dp" />
 
@@ -59,7 +60,7 @@
 
                         android:id="@+id/tempWeitherItemTvId"
                         android:textSize="15sp"
-                        android:text="SEID"
+                        android:text="SEID : 255700 "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -67,7 +68,7 @@
 
                         android:id="@+id/windWeitherItemTvId"
                         android:textSize="15sp"
-                        android:text="BATCH"
+                        android:text="BATCH : 12 "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -81,6 +82,75 @@
 
 
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:background="@color/mainColor"
+                android:src="@mipmap/ic_launcher"
+                android:layout_width="100dp"
+                android:layout_height="80dp" />
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+
+                    android:textSize="15sp"
+                    android:text="Shuva Ranjan Rishi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+
+                    android:textSize="15sp"
+                    android:text="Android Developer"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+
+
+
+                        android:textSize="15sp"
+                        android:text="SEID : 270318 "
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_marginLeft="20dp"
+
+
+                        android:textSize="15sp"
+                        android:text="BATCH : 12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -109,7 +179,7 @@
                 <TextView
 
                     android:textSize="15sp"
-                    android:text="MD. RAHAMAT ULLAH"
+                    android:text="Md. Harun "
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -132,7 +202,7 @@
 
 
                         android:textSize="15sp"
-                        android:text="SEID"
+                        android:text="SEID : 268565 "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -140,77 +210,7 @@
 
 
                         android:textSize="15sp"
-                        android:text="BATCH"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp">
-
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:background="@color/mainColor"
-                android:src="@mipmap/ic_launcher"
-
-                android:layout_width="100dp"
-                android:layout_height="80dp" />
-
-            <LinearLayout
-                android:layout_gravity="center"
-                android:padding="5dp"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-
-                    android:textSize="15sp"
-                    android:text="MD. RAHAMAT ULLAH"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-
-                    android:textSize="15sp"
-                    android:text="Android Developer"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-
-
-
-                        android:textSize="15sp"
-                        android:text="SEID"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:layout_marginLeft="20dp"
-
-
-                        android:textSize="15sp"
-                        android:text="BATCH"
+                        android:text="BATCH : 12 "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 

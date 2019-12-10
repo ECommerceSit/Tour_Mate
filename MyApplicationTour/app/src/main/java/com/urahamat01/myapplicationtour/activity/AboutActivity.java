@@ -1,6 +1,7 @@
 package com.urahamat01.myapplicationtour.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.urahamat01.myapplicationtour.R;
 
 import android.os.Bundle;
 
