@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,8 +35,6 @@ import java.util.Calendar;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-
     private EditText emailEt, passwordEt, confirmpassEt, fnameET, lnameEt;
     private Button signUp;
     private ImageView imageView;
@@ -45,7 +44,6 @@ public class SignUpActivity extends AppCompatActivity {
     private String savecurrentdate, savecurrenttime, postrandomname, downloadurl, currentuser;
     private String imageUrl;
     private ProgressDialog loadinbar;
-
 
     private static final int Gallery_Pick = 1;
     private Uri ImageUri;
@@ -81,12 +79,11 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final String firstName = fnameET.getText().toString();
-                final String lastName = lnameEt.getText().toString();
-                final String email = emailEt.getText().toString();
-                final String password = passwordEt.getText().toString();
-                final String confirmPassword = confirmpassEt.getText().toString();
-
+                final String firstName = fnameET.getText().toString().trim();
+                final String lastName = lnameEt.getText().toString().trim();
+                final String email = emailEt.getText().toString().trim();
+                final String password = passwordEt.getText().toString().trim();
+                final String confirmPassword = confirmpassEt.getText().toString().trim();
 
                 Calendar callForDate = Calendar.getInstance();
                 SimpleDateFormat currentdate = new SimpleDateFormat("dd-MMM-yyyy");
@@ -98,69 +95,132 @@ public class SignUpActivity extends AppCompatActivity {
 
                 postrandomname = savecurrentdate + savecurrenttime;
 
-                //signUpWithEmailAndPassword(firstName, lastName, email, password);
-
-
-                if (firstName.equals("") || lastName.equals("") || email.equals("") || password.equals("") || confirmPassword.equals("")) {
-
-                    Toast.makeText(SignUpActivity.this, "All the fields are required", Toast.LENGTH_SHORT).show();
+                if (!validate(firstName, lastName, email, password, confirmPassword)) {
                     return;
-                } else if (password.length() < 6) {
-                    Toast.makeText(SignUpActivity.this, "password would be upto 6 characters", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (ImageUri == null) {
-                    Toast.makeText(SignUpActivity.this, "Please select an Image", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (emailEt.getText().toString().trim().matches(emailPattern)) {
-
-                    if (confirmPassword.contains(password)) {
-
-
-                        loadinbar.setTitle("SignUpActivity");
-                        loadinbar.setMessage("Signing up");
-                        loadinbar.show();
-                        loadinbar.setCanceledOnTouchOutside(true);
-
-                        final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Post Images").child(ImageUri.getLastPathSegment() + postrandomname + ".jpg");
-                        filepath.putFile(ImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    Task<Uri> result = task.getResult().getMetadata().getReference().getDownloadUrl();
-                                    result.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            downloadurl = uri.toString();
-                                            signUpWithEmailAndPassword(firstName, lastName, email, password, downloadurl);
-
-                                        }
-                                    });
-
-
-
-                                }
-                            }
-                        });
-
-
-                    } else {
-
-                        Toast.makeText(SignUpActivity.this, "password not match", Toast.LENGTH_SHORT).show();
-                    }
-
-
                 } else {
-                    Toast.makeText(SignUpActivity.this, "Invalid Email address", Toast.LENGTH_SHORT).show();
+
+                    loadinbar.setTitle("SignUpActivity");
+                    loadinbar.setMessage("Signing up");
+                    loadinbar.show();
+                    loadinbar.setCanceledOnTouchOutside(true);
+
+                    if (ImageUri != null) {
+                        signUpWithImage(firstName, lastName, email, password);
+                    } else {
+                        signUpWithOutImage(firstName, lastName, email, password);
+                    }
                 }
-
-
             }
         });
 
 
     }
 
+    private void signUpWithImage(final String firstName, final String lastName, final String email, final String password) {
+
+        final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Post Images").child(ImageUri.getLastPathSegment() + postrandomname + ".jpg");
+        filepath.putFile(ImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    Task<Uri> result = task.getResult().getMetadata().getReference().getDownloadUrl();
+                    result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+
+                            downloadurl = uri.toString();
+                            signUpWithEmailAndPassword(firstName, lastName, email, password, downloadurl);
+
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void signUpWithOutImage(String firstName, String lastName, String email, String password) {
+
+        final User user = new User(firstName, lastName, email);
+
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                if (task.isSuccessful()) {
+                    String userId = firebaseAuth.getCurrentUser().getUid();
+                    user.setUserId(userId);
+
+                    DatabaseReference databaseReference = firebaseDatabase.getReference().child("UserList").child(userId);
+
+                    databaseReference.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            if (task.isSuccessful()) {
+                                emailEt.setText("");
+                                passwordEt.setText("");
+                                confirmpassEt.setText("");
+                                fnameET.setText("");
+                                lnameEt.setText("");
+                                imageView.setVisibility(View.INVISIBLE);
+                                loadinbar.dismiss();
+                                Toast.makeText(SignUpActivity.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(SignUpActivity.this, LogInActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(SignUpActivity.this, "Sign Up not Success", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                }
+
+            }
+        });
+    }
+
+    private boolean validate(String firstName, String lastName, String email, String password, String confirmPassword) {
+
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+        if (firstName.isEmpty()) {
+            fnameET.setError("Please enter first Name");
+            return false;
+        } else if (firstName.length() < 3) {
+            fnameET.setError("First Name should be at least 3 character");
+            return false;
+        } else if (lastName.isEmpty()) {
+            lnameEt.setError("Please enter last Name");
+            return false;
+        } else if (lastName.length() < 3) {
+            lnameEt.setError("Last Name should be at least 3 character");
+            return false;
+        } else if (email.isEmpty()) {
+            emailEt.setError("Please enter a email");
+            return false;
+        } else if (!email.matches(emailPattern)) {
+            emailEt.setError("Please enter a valid email");
+            return false;
+        } else if (password.isEmpty()) {
+            passwordEt.setError("Please enter a password");
+            return false;
+        } else if (password.length() < 6) {
+            passwordEt.setError("Password must be at least 6 character");
+            return false;
+        } else if (confirmPassword.isEmpty()) {
+            confirmpassEt.setError("Please enter confirm password");
+            return false;
+        } else if (confirmPassword.length() < 6) {
+            confirmpassEt.setError("Password must be at least 6 character");
+            return false;
+        } else if (confirmPassword.contains(password)) {
+            confirmpassEt.setError("Password did not matched");
+            return false;
+        }
+
+        return true;
+    }
 
     public byte[] getBytes(InputStream inputStream) throws IOException {
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
@@ -173,7 +233,6 @@ public class SignUpActivity extends AppCompatActivity {
         }
         return byteBuffer.toByteArray();
     }
-
 
     private void signUpWithEmailAndPassword(final String firstName, String lastName, String email, final String password, final String image) {
 
@@ -195,6 +254,7 @@ public class SignUpActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
 
                             if (task.isSuccessful()) {
+
                                 emailEt.setText("");
                                 passwordEt.setText("");
                                 confirmpassEt.setText("");
@@ -202,11 +262,12 @@ public class SignUpActivity extends AppCompatActivity {
                                 lnameEt.setText("");
                                 imageView.setVisibility(View.INVISIBLE);
                                 loadinbar.dismiss();
-                                Toast.makeText(SignUpActivity.this, "Sign Up success", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUpActivity.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(SignUpActivity.this, LogInActivity.class);
                                 startActivity(intent);
+
                             } else {
-                                Toast.makeText(SignUpActivity.this, "Sign Up not success", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUpActivity.this, "Sign Up not Success", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -225,7 +286,6 @@ public class SignUpActivity extends AppCompatActivity {
         intent.setType("image/*");
         startActivityForResult(intent, Gallery_Pick);
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
