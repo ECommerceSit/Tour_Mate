@@ -27,7 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
          <activity
-            android:name="com.urahamat01.myapplicationtour.activity.splashActivity"
+            android:name="com.urahamat01.myapplicationtour.activity.SplashScreenActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar1">
 
