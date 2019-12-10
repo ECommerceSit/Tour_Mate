@@ -11,14 +11,15 @@
             android:icon="@drawable/home"
         android:title="Home" />
         <item
+            android:id="@+id/nav_Ticket"
             android:iconTint="@color/mainColor"
             android:icon="@drawable/bus"
             android:title="Trips" />
-        <item
+        <!--<item
             android:iconTint="@color/mainColor"
             android:id="@+id/nav_Ticket"
             android:icon="@drawable/bus"
-            android:title="Ticket Booking" />
+            android:title="Ticket Booking" />-->
         <item
             android:iconTint="@color/mainColor"
             android:id="@+id/nav_Weather"
@@ -48,13 +49,9 @@
                 android:icon="@drawable/ic_menu_send"
                 android:title="Send" />-->
 
-            <item
 
-                android:title="Task"
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_format_list_bulleted_black_24dp"></item>
             <item
-                android:title="Contacts"
+                android:title="About Developer"
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_account_circle_black_24dp"></item>
 

@@ -33,6 +33,7 @@ import com.squareup.picasso.Picasso;
 import com.urahamat01.myapplicationtour.bottom_sheet.BottomSheet_AddTrip;
 import com.urahamat01.myapplicationtour.fragment.DashBoardFragment;
 import com.urahamat01.myapplicationtour.fragment.TicketFragment;
+import com.urahamat01.myapplicationtour.fragment.TripFragment;
 import com.urahamat01.myapplicationtour.map_action.MapsActivity;
 import com.urahamat01.myapplicationtour.R;
 
@@ -223,11 +224,11 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_Ticket) {
 
-            TicketFragment ticketFragment = new TicketFragment();
+            TripFragment tripFragment = new TripFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.addToBackStack("dashboard");
-            fragmentTransaction.replace(R.id.frame_layout_id, ticketFragment);
+            fragmentTransaction.replace(R.id.frame_layout_id, tripFragment);
             fragmentTransaction.commit();
 
 
@@ -240,10 +241,11 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.frame_layout_id, dashBoardFragment);
             fragmentTransaction.commit();
 
-        } else if (id == R.id.nav_share) {
+        }  else if (id == R.id.nav_send) {
 
-
-        } else if (id == R.id.nav_send) {
+            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(intent);
+            return true;
 
         }
 
