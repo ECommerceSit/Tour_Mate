@@ -104,87 +104,40 @@ public class SignUpActivity extends AppCompatActivity {
                     loadinbar.show();
                     loadinbar.setCanceledOnTouchOutside(true);
 
-                    if (ImageUri != null) {
-                        signUpWithImage(firstName, lastName, email, password);
-                    } else {
-                        signUpWithOutImage(firstName, lastName, email, password);
-                    }
-                }
-            }
-        });
-
-
-    }
-
-    private void signUpWithImage(final String firstName, final String lastName, final String email, final String password) {
-
-        final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Post Images").child(ImageUri.getLastPathSegment() + postrandomname + ".jpg");
-        filepath.putFile(ImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                if (task.isSuccessful()) {
-
-                    Task<Uri> result = task.getResult().getMetadata().getReference().getDownloadUrl();
-                    result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Post Images").child(ImageUri.getLastPathSegment() + postrandomname + ".jpg");
+                    filepath.putFile(ImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
-                        public void onSuccess(Uri uri) {
-
-                            downloadurl = uri.toString();
-                            signUpWithEmailAndPassword(firstName, lastName, email, password, downloadurl);
-
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    private void signUpWithOutImage(String firstName, String lastName, String email, String password) {
-
-        final User user = new User(firstName, lastName, email);
-
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                if (task.isSuccessful()) {
-                    String userId = firebaseAuth.getCurrentUser().getUid();
-                    user.setUserId(userId);
-
-                    DatabaseReference databaseReference = firebaseDatabase.getReference().child("UserList").child(userId);
-
-                    databaseReference.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                             if (task.isSuccessful()) {
-                                emailEt.setText("");
-                                passwordEt.setText("");
-                                confirmpassEt.setText("");
-                                fnameET.setText("");
-                                lnameEt.setText("");
-                                imageView.setVisibility(View.INVISIBLE);
-                                loadinbar.dismiss();
-                                Toast.makeText(SignUpActivity.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(SignUpActivity.this, LogInActivity.class);
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(SignUpActivity.this, "Sign Up not Success", Toast.LENGTH_SHORT).show();
+
+                                Task<Uri> result = task.getResult().getMetadata().getReference().getDownloadUrl();
+                                result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+
+                                        downloadurl = uri.toString();
+                                        signUpWithEmailAndPassword(firstName, lastName, email, password, downloadurl);
+
+                                    }
+                                });
                             }
                         }
                     });
-
                 }
-
             }
         });
+
+
     }
 
     private boolean validate(String firstName, String lastName, String email, String password, String confirmPassword) {
 
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
-        if (firstName.isEmpty()) {
+        if(ImageUri == null){
+            Toast.makeText(this, "Please select an Image", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if (firstName.isEmpty()) {
             fnameET.setError("Please enter first Name");
             return false;
         } else if (firstName.length() < 3) {
