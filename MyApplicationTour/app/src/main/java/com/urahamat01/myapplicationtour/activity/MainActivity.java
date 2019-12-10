@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -31,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.urahamat01.myapplicationtour.bottom_sheet.BottomSheet_AddTrip;
+import com.urahamat01.myapplicationtour.fragment.AboutDevelopersFragment;
 import com.urahamat01.myapplicationtour.fragment.DashBoardFragment;
 import com.urahamat01.myapplicationtour.fragment.TicketFragment;
 import com.urahamat01.myapplicationtour.fragment.TripFragment;
@@ -40,8 +42,11 @@ import com.urahamat01.myapplicationtour.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle toggle;
+    private NavigationView navigationView;
 
     private BottomSheet_AddTrip bottomSheet_addTrip;
     private TextView userNameTv;
@@ -64,14 +69,12 @@ public class MainActivity extends AppCompatActivity
 
         loaddefaultfragment();
 
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View header = navigationView.getHeaderView(0);
@@ -93,7 +96,6 @@ public class MainActivity extends AppCompatActivity
                     Uri myUri = Uri.parse(pfPhoto);
                     Picasso.get().load(myUri).into(userPhotoIV);
 
-
                     userNameHeaderTv.setText(name);
                     userEmailHeaderTv.setText(email);
 
@@ -113,18 +115,14 @@ public class MainActivity extends AppCompatActivity
 
     private void loaddefaultfragment() {
 
-        DashBoardFragment dashBoardFragment = new DashBoardFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout_id, dashBoardFragment);
-        fragmentTransaction.commit();
+        changeFragment(new DashBoardFragment());
 
     }
 
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -134,7 +132,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -142,16 +139,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        int id = item.getItemId();
+        if (item.getItemId() == R.id.logout_menu_item) {
 
-
-
-        if (id == R.id.action_settings) {
-            DashBoardFragment dashBoardFragment = new DashBoardFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frame_layout_id, dashBoardFragment);
-            fragmentTransaction.commit();
+            logout();
 
             return true;
         }
@@ -165,93 +155,88 @@ public class MainActivity extends AppCompatActivity
 
         int id = item.getItemId();
 
-
         if (id == R.id.nav_Weather) {
 
             Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
             startActivity(intent);
+
         } else if (id == R.id.nav_Nearme) {
 
             Intent intent = new Intent(MainActivity.this, MapsActivity.class);
             startActivity(intent);
 
-
         } else if (id == R.id.nav_Logout) {
 
-
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            LayoutInflater layoutInflater = LayoutInflater.from(this);
-            View view = layoutInflater.inflate(R.layout.alart_signout, null);
-
-            builder.setView(view);
-            final Dialog dialog = builder.create();
-            dialog.show();
-
-            TextView signout = view.findViewById(R.id.signOutTvId);
-            TextView cancel = view.findViewById(R.id.cancelTvID);
-
-            signout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    FirebaseAuth.getInstance().signOut();
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    if (user != null) {
-
-
-                    } else {
-
-                        Intent intent = new Intent(MainActivity.this, LogInActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-
-
-                    }
-
-
-                    dialog.dismiss();
-                }
-            });
-
-            cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    dialog.dismiss();
-                }
-            });
-
+            logout();
 
         } else if (id == R.id.nav_Ticket) {
 
-            TripFragment tripFragment = new TripFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.addToBackStack("dashboard");
-            fragmentTransaction.replace(R.id.frame_layout_id, tripFragment);
+            fragmentTransaction.replace(R.id.frame_layout_id,  new TripFragment());
             fragmentTransaction.commit();
-
-
-
 
         } else if (id == R.id.nav_Home) {
-            DashBoardFragment dashBoardFragment = new DashBoardFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frame_layout_id, dashBoardFragment);
-            fragmentTransaction.commit();
 
-        }  else if (id == R.id.nav_send) {
+            changeFragment(new DashBoardFragment());
 
-            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
-            startActivity(intent);
-            return true;
+        } else if (id == R.id.about_developers) {
+
+            changeFragment(new AboutDevelopersFragment());
 
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void changeFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout_id, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void logout() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View view = layoutInflater.inflate(R.layout.alart_signout, null);
+
+        builder.setView(view);
+        final Dialog dialog = builder.create();
+        dialog.show();
+
+        TextView signout = view.findViewById(R.id.signOutTvId);
+        TextView cancel = view.findViewById(R.id.cancelTvID);
+
+        signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FirebaseAuth.getInstance().signOut();
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+
+
+                } else {
+
+                    Intent intent = new Intent(MainActivity.this, LogInActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+
+
+                dialog.dismiss();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+            }
+        });
     }
 }
