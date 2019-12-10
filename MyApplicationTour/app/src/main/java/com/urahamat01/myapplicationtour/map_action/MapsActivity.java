@@ -110,7 +110,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Location");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         currentLocationmMarker = mMap.addMarker(markerOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomBy(10));
@@ -150,7 +150,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 break;
             case R.id.B_restaurants:
                 mMap.clear();
-                String resturant = "local_government_office";
+                String resturant = "local_restaurants";
                 url = getUrl(latitude, longitude, resturant);
                 dataTransfer[0] = mMap;
                 dataTransfer[1] = url;
